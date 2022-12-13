@@ -1,34 +1,44 @@
-const Engine=Matter.Engine;
-const World=Matter.World;
-const Bodies=Matter.Bodies;
-const Body=Matter.Body;
+var canvas;
+var backgroundImage, bgImg, car1_img, car2_img, track;
+var database, gameState;
+var form, player, playerCount;
+var allPlayers, car1, car2;
+var cars = [];
+var fuelImage, powerCoinImage;
 
+
+//BP
+function preload() {
+  backgroundImage = loadImage("./assets/background.png");
+  car1_img = loadImage("../assets/car1.png");
+  car2_img = loadImage("../assets/car2.png");
+  track = loadImage("../assets/track.jpg");
+  fuelImage = loadImage("./assets/fuel.png");
+  powerCoinImage = loadImage("./assets/goldCoin.png");
+}
+
+//BP
 function setup() {
-    createCanvas(400,400);
-
-engine=Engine.create();
-world=engine.World;
-
-var ball_options={
-    restitution: 0.95,
-    frictionAir: 0.01
-}
-var graund_options={
-    isStatid:true
-};
-ball=Bodies.circle(200,10,20,ball_options);
-World.add(world,ball);
-graund=Bodies.rectangle(200,350,20,graund_options);
-rectMode(CENTER);
-ellipseMode(RADIUS);
+  canvas = createCanvas(windowWidth, windowHeight);
+  database = firebase.database();
+  game = new Game();
+  game.getState();
+  game.start();
+ 
 }
 
+//BP
 function draw() {
-    bacgraund("blue");
-Engine.update(engine);
+  background(backgroundImage);
+  if (playerCount === 2) {
+    game.update(1);
+  }
 
-ellipse(ball.position.x,ball.position.y,20);
-rect(graund,position.x,graund.position.y,400,20);
-  
+  if (gameState === 1) {
+    game.play();
+  }
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
